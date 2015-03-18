@@ -1,9 +1,11 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AtomsPreCompiler
@@ -142,23 +144,43 @@ namespace AtomsPreCompiler
 
         private void CompileAttribute(string name, HtmlAttribute att)
         {
-            if (name == "atom-type") {
+            if (!(name.StartsWith("atom-") || name.StartsWith("style-")))
+                return;
+
+            if (name == "atom-type")
+            {
                 // ignore...
                 return;
             }
 
             string value = att.Value;
-            bool bind = value.StartsWith("[");
 
-            if (name.StartsWith("style-") || name.StartsWith("atom-")) {
-                if (name.StartsWith("atom-"))
-                {
-                    name = name.Substring(5);
-                }
-                Writer.WriteLine("this.setValue('{0}',\"{1}\",{2},e);", name, value, bind);
-                AttributesToDelete.Add(att);
+            AttributesToDelete.Add(att);
+
+            if (value.StartsWith("{")) { 
+                // one time binding...
+                value = value.Substring(1).Till("}");
+                var bindings = Parse(value);
+
+                Writer.WriteLine("this.setLocalValue('{0}', {1} ,e);", name, value);
+                return;
             }
 
+            if (value.StartsWith("[")) { 
+                // one way binding...
+                value = value.Substring(1).Till("]");
+                var bindings = Parse(value);
+            }
+
+        }
+
+        Regex bindingRegex = new Regex("(\\$)(window|appScope|scope|data|owner|localScope)(\\.[a-zA-Z_][a-zA-Z_0-9]*)*", RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.Compiled);
+
+        private Dictionary<string,string> Parse(string value)
+        {
+            var m = bindingRegex.Matches(value);
+            //Trace.WriteLine(m.Count);
+            return null;
         }
 
         private void CompileScript(HtmlNode element)

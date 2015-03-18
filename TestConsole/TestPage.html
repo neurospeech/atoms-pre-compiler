@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div atom-type="AtomApplication">
+        <script type="text/javascript/scope">
+            ({
+                start: 0,
+                size:100,
+                talentID:0
+            })
+        </script>
+
+        <div atom-dock="Top"
+             style="height:30px">
+
+            <span>Talent ID:</span>
+            <input type="search" atom-value="$[appScope.talentID]" />
+            <button>Search</button>
+        </div>
+
+        <div atom-dock="Fill"
+             atom-name="emailList"
+             atom-type="AtomListBox"
+             atom-value-path="EmailID"
+             atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), orderBy:'EmailID desc', start:$appScope.start*$appScope.size, size:$appScope.size })]"
+             style="overflow:auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email ID</th>
+                        <th>Has Error</th>
+                        <th>Subject</th>
+                        <th>Email From</th>
+                        <th>Email Type</th>
+                        <th>MailPath</th>
+                        <th>EmailSent</th>
+                    </tr>
+                </thead>
+                <tbody atom-presenter="itemsPresenter">
+                    <tr atom-template="itemTemplate">
+                        <td>
+                            <a atom-href="{'/admin/EmailQueue/preview/' + $data.EmailID}"
+                               atom-text="{$data.EmailID}"
+                               target="_blank"></a>
+                        </td>
+                        <td atom-text="{$data.ErrorDetails ? 'Yes' : 'No'}"></td>
+                        <td atom-text="{$data.Subject}"></td>
+                        <td atom-text="{$data.FromName}"></td>
+                        <td atom-text="{$data.EmailType}"></td>
+                        <td atom-text="{$data.MailPath}"></td>
+                        <td atom-text="{($data.DateSent || '').toLocaleString()}"></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div atom-dock="Right"
+             style="width:300px;"
+             atom-type="AtomItemsControl"
+             atom-items="[!$scope.emailList.selectedItem || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: $appScope.emailList.value } })]">
+            <table>
+                <thead>
+                    <tr>
+                        <th>To</th>
+                        <th>Sent Date</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody atom-presenter="itemsPresenter">
+                    <tr atom-template="itemTemplate">
+                        <td atom-text="{$data.EmailAddress}"></td>
+                        <td atom-text="{($data.DateSent || '').toLocaleString()}"></td>
+                        <td>
+                            <button atom-event-click="{ {alert: $data.EmailError} }"
+                                    style="display:none"
+                                    style-display="{$data.EmailError ? '' : 'none'}">
+                                Error
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="height:30px;"
+             atom-dock="Bottom">
+            <button style-display="[$appScope.start ? '' : 'none']"
+                    atom-event-click="[ { appScope: { start: $appScope.start-1 } } ]">
+                Prev
+            </button>
+            <button style-position="absolute"
+                    style-top="5px"
+                    style-right="5px"
+                    atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]">
+                Next
+            </button>
+        </div>
+        </div>
+</body>
+</html>

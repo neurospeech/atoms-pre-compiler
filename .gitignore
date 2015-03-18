@@ -31,3 +31,7 @@
 /Web/obj
 /packages
 *.suo
+/AtomsPreCompiler/bin
+/TestConsole/bin
+/TestConsole/obj
+/Web/bin

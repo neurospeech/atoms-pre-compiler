@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomsPreCompiler.Web", "Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomsPreCompiler", "AtomsPreCompiler\AtomsPreCompiler.csproj", "{000E8F2D-24B9-49E4-81E8-09D3F3AF4C7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{9FA01971-B856-4FAB-BC7A-3F10B96969A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{000E8F2D-24B9-49E4-81E8-09D3F3AF4C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{000E8F2D-24B9-49E4-81E8-09D3F3AF4C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{000E8F2D-24B9-49E4-81E8-09D3F3AF4C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA01971-B856-4FAB-BC7A-3F10B96969A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA01971-B856-4FAB-BC7A-3F10B96969A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA01971-B856-4FAB-BC7A-3F10B96969A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA01971-B856-4FAB-BC7A-3F10B96969A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
