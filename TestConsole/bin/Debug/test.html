@@ -8,22 +8,23 @@
 (function(window,WebAtoms){ 
  WebAtoms.PageSetup = WebAtoms.PageSetup || {};
 (function (window,WebAtoms,Atom,AtomPromise){
- 
-this.a1= function (e){
+ this.a1= function(e){
 // Line 10
 	this.initScope(({
                 start: 0,
                 size:100,
                 talentID:0
             }));
-}
 
-this.a2= function (e){
+};
+
+this.a2= function(e){
 /* Line 22, atom-value="$[appScope.talentID]" */
 	this.bind(e,'value',['appScope', 'talentID'],true)
-}
 
-this.a3= function (e){
+};
+
+this.a3= function(e){
 /* Line 27, atom-name="emailList" */
 	this.setLocalValue('name', 'emailList', e);
 /* Line 29, atom-value-path="EmailID" */
@@ -38,46 +39,54 @@ this.a3= function (e){
 				 return AtomPromise.json('/admin/entity/email/query',{ query: (v1 ? { TalentID: v1 } : {  }), 
              orderBy:'EmailID desc', start:v2*v3, size:v3 }); 
 			});
-}
 
-this.a4= function (e){
+};
+
+this.a4= function(e){
 /* Line 48, atom-href="{'/admin/EmailQueue/preview/' + $data.EmailID}" */
 	this.setLocalValue('href', '/admin/EmailQueue/preview/' + Atom.get(this,'data.EmailID'), e);
 /* Line 49, atom-text="{$data.EmailID}" */
 	this.setLocalValue('text', Atom.get(this,'data.EmailID'), e);
-}
 
-this.a5= function (e){
+};
+
+this.a5= function(e){
 /* Line 52, atom-text="{$data.ErrorDetails ? 'Yes' : 'No'}" */
 	this.setLocalValue('text', Atom.get(this,'data.ErrorDetails') ? 'Yes' : 'No', e);
-}
 
-this.a6= function (e){
+};
+
+this.a6= function(e){
 /* Line 53, atom-text="{$data.Subject}" */
 	this.setLocalValue('text', Atom.get(this,'data.Subject'), e);
-}
 
-this.a7= function (e){
+};
+
+this.a7= function(e){
 /* Line 54, atom-text="{$data.FromName}" */
 	this.setLocalValue('text', Atom.get(this,'data.FromName'), e);
-}
 
-this.a8= function (e){
+};
+
+this.a8= function(e){
 /* Line 55, atom-text="{$data.EmailType}" */
 	this.setLocalValue('text', Atom.get(this,'data.EmailType'), e);
-}
 
-this.a9= function (e){
+};
+
+this.a9= function(e){
 /* Line 56, atom-text="{$data.MailPath}" */
 	this.setLocalValue('text', Atom.get(this,'data.MailPath'), e);
-}
 
-this.a10= function (e){
+};
+
+this.a10= function(e){
 /* Line 57, atom-text="{($data.DateSent || '').toLocaleString()}" */
 	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
-}
 
-this.a11= function (e){
+};
+
+this.a11= function(e){
 /* Line 67, atom-items="[!$scope.emailList.selectedItem || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: $appScope.emailList.value } })]" */
 	this.bind(e,'items',[
 	['scope', 'emailList', 'selectedItem'],
@@ -85,26 +94,30 @@ this.a11= function (e){
 			false, function(v1,v2){
 				 return !v1 || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: v2 } }); 
 			});
-}
 
-this.a12= function (e){
+};
+
+this.a12= function(e){
 /* Line 78, atom-text="{$data.EmailAddress}" */
 	this.setLocalValue('text', Atom.get(this,'data.EmailAddress'), e);
-}
 
-this.a13= function (e){
+};
+
+this.a13= function(e){
 /* Line 79, atom-text="{($data.DateSent || '').toLocaleString()}" */
 	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
-}
 
-this.a14= function (e){
+};
+
+this.a14= function(e){
 /* Line 81, atom-event-click="{ {alert: $data.EmailError} }" */
 	this.setLocalValue('eventClick',  {alert: Atom.get(this,'data.EmailError')} , e);
 /* Line 83, style-display="{$data.EmailError ? '' : 'none'}" */
 	e.style['Display'] = Atom.get(this,'data.EmailError') ? '' : 'none';
-}
 
-this.a15= function (e){
+};
+
+this.a15= function(e){
 /* Line 94, style-display="[$appScope.start ? '' : 'none']" */
 	this.bind(e,'styleDisplay',[
 	['appScope', 'start']],
@@ -117,9 +130,10 @@ this.a15= function (e){
 			false, function(v1){
 				 return  { appScope: { start: v1-1 } } ; 
 			});
-}
 
-this.a16= function (e){
+};
+
+this.a16= function(e){
 /* Line 98, style-position="absolute" */
 	e.style['Position'] = 'absolute';
 /* Line 99, style-top="5px" */
@@ -132,7 +146,9 @@ this.a16= function (e){
 			false, function(v1){
 				 return  { appScope: { start: v1+1 } } ; 
 			});
-}
+
+};
+
 }).call(window.WebAtoms.PageSetup,window,window.WebAtoms,window.Atom,window.AtomPromise); 
 })(window,window.WebAtoms);</script></head>
 <body>

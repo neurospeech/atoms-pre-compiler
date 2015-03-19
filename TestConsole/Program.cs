@@ -12,9 +12,9 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            PageCompiler pc = new PageCompiler(Test.TestPage);
+            PageCompiler pc = new PageCompiler();
 
-            File.WriteAllText("test.html", pc.CompiledHtml);
+            File.WriteAllText("test.html", pc.Compile(Test.TestPage).Document);
             
         }
     }
