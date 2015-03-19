@@ -1,6 +1,7 @@
 ﻿using AtomsPreCompiler;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace TestConsole
         {
             PageCompiler pc = new PageCompiler(Test.TestPage);
 
+            File.WriteAllText("test.html", pc.CompiledHtml);
             
         }
     }

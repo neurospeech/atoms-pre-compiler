@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,11 @@ namespace AtomsPreCompiler
             if (index == -1)
                 return a;
             return a.Substring(0, index);
+        }
+
+        internal static string ToCamelCase(this string a) {
+            var t = string.Join("", a.Split('-').Select( (s,i)   => i==0 ? s : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant().Trim())));
+            return t;
         }
     }
 }

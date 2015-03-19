@@ -27,7 +27,8 @@
              atom-name="emailList"
              atom-type="AtomListBox"
              atom-value-path="EmailID"
-             atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), orderBy:'EmailID desc', start:$appScope.start*$appScope.size, size:$appScope.size })]"
+             atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), 
+             orderBy:'EmailID desc', start:$appScope.start*$appScope.size, size:$appScope.size })]"
              style="overflow:auto">
             <table>
                 <thead>
