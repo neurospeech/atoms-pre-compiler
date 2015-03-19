@@ -26,7 +26,7 @@ namespace AtomsPreCompiler
         }
 
         internal static string ToCamelCase(this string a) {
-            var t = string.Join("", a.Split('-').Select( (s,i)   => i==0 ? s : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant().Trim())));
+            var t = string.Join("", a.ToLowerInvariant().Split('-').Select( (s,i)   => i==0 ? s : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant().Trim())));
             return t;
         }
     }

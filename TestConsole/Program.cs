@@ -13,7 +13,7 @@ namespace TestConsole
         static void Main(string[] args)
         {
             PageCompiler pc = new PageCompiler();
-
+            pc.Debug = true;
             File.WriteAllText("test.html", pc.Compile(Test.TestPage).Document);
             
         }

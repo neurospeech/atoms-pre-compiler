@@ -34,7 +34,6 @@ namespace AtomsPreCompiler
         public HtmlCompiler()
         {
 
-            Index = 0;
         }
 
         public CompilerResult Compile(string html) {
@@ -147,6 +146,9 @@ namespace AtomsPreCompiler
             foreach (var att in element.Attributes)
             {
                 CompileAttribute(element, att.Name.ToLower(), att);
+                if (att.Name.StartsWith("atom-")) {
+                    att.Name = "data-" + att.Name;
+                }
             }
 
             if (Writer.GetStringBuilder().ToString().Trim().Length > 0) {
@@ -214,7 +216,7 @@ namespace AtomsPreCompiler
                 return;
             }
 
-            CompileOneTimeBinding(att, name, "'" + value + "'");
+            CompileOneTimeBinding(att, name, "'" + value + "'",true);
 
         }
 
@@ -254,19 +256,44 @@ namespace AtomsPreCompiler
             }
         }
 
-        private void CompileOneTimeBinding(HtmlAttribute att, string name, string value)
+        private void CompileOneTimeBinding(HtmlAttribute att, string name, string value, bool constant = false)
         {
             DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
             value = bindingRegex.Replace(value, (s) => "Atom.get(this,'" + s.Value.Substring(1) + "')");
 
-            if (name.StartsWith("style"))
+            // only if it is constant, ignore setLocalValue
+            // setLocalValue is necessary to evaluate promise value
+            if (constant)
             {
-                name = name.Substring(5).ToCamelCase();
-                Writer.WriteLine("\te.style['{0}'] = {1};", name, value);
+                if (name.StartsWith("style"))
+                {
+                    name = name.Substring(5).ToCamelCase();
+                    Writer.WriteLine("\te.style['{0}'] = {1};", name, value);
+                }
+                else
+                {
+                    switch (name)
+                    {
+                        case "text":
+                        case "value":
+                        case "isEnabled":
+                        case "checked":
+                        case "html":
+                        case "absPos":
+                        case "relPos":
+                            Writer.WriteLine("\tAtomProperties.{0}(e,{1});", name, value);
+                            break;
+                        case "class":
+                            Writer.WriteLine("\tAtomProperties.{0}(e,{1});", name, value);
+                            break;
+                        default:
+                            Writer.WriteLine("\tthis.setLocalValue('{0}', {1}, e);", name, value);
+                            break;
+                    }
+                }
             }
-            else
-            {
+            else {
                 Writer.WriteLine("\tthis.setLocalValue('{0}', {1}, e);", name, value);
             }
             AttributesToDelete.Add(att);
