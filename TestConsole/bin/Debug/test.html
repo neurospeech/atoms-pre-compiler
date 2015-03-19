@@ -9,7 +9,6 @@
  WebAtoms.PageSetup = WebAtoms.PageSetup || {};
 (function (window,WebAtoms,Atom,AtomPromise){
  this.a1= function(e){
-// Line 10
 	this.initScope(({
                 start: 0,
                 size:100,
@@ -19,18 +18,13 @@
 };
 
 this.a2= function(e){
-/* Line 22, atom-value="$[appScope.talentID]" */
 	this.bind(e,'value',['appScope', 'talentID'],true)
 
 };
 
 this.a3= function(e){
-/* Line 27, atom-name="emailList" */
 	this.setLocalValue('name', 'emailList', e);
-/* Line 29, atom-value-path="EmailID" */
 	this.setLocalValue('valuePath', 'EmailID', e);
-/* Line 30, atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), 
-             orderBy:'EmailID desc', start:$appScope.start*$appScope.size, size:$appScope.size })]" */
 	this.bind(e,'items',[
 	['appScope', 'talentID'],
 	['appScope', 'start'],
@@ -43,51 +37,42 @@ this.a3= function(e){
 };
 
 this.a4= function(e){
-/* Line 48, atom-href="{'/admin/EmailQueue/preview/' + $data.EmailID}" */
 	this.setLocalValue('href', '/admin/EmailQueue/preview/' + Atom.get(this,'data.EmailID'), e);
-/* Line 49, atom-text="{$data.EmailID}" */
 	this.setLocalValue('text', Atom.get(this,'data.EmailID'), e);
 
 };
 
 this.a5= function(e){
-/* Line 52, atom-text="{$data.ErrorDetails ? 'Yes' : 'No'}" */
 	this.setLocalValue('text', Atom.get(this,'data.ErrorDetails') ? 'Yes' : 'No', e);
 
 };
 
 this.a6= function(e){
-/* Line 53, atom-text="{$data.Subject}" */
 	this.setLocalValue('text', Atom.get(this,'data.Subject'), e);
 
 };
 
 this.a7= function(e){
-/* Line 54, atom-text="{$data.FromName}" */
 	this.setLocalValue('text', Atom.get(this,'data.FromName'), e);
 
 };
 
 this.a8= function(e){
-/* Line 55, atom-text="{$data.EmailType}" */
 	this.setLocalValue('text', Atom.get(this,'data.EmailType'), e);
 
 };
 
 this.a9= function(e){
-/* Line 56, atom-text="{$data.MailPath}" */
 	this.setLocalValue('text', Atom.get(this,'data.MailPath'), e);
 
 };
 
 this.a10= function(e){
-/* Line 57, atom-text="{($data.DateSent || '').toLocaleString()}" */
 	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
 
 };
 
 this.a11= function(e){
-/* Line 67, atom-items="[!$scope.emailList.selectedItem || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: $appScope.emailList.value } })]" */
 	this.bind(e,'items',[
 	['scope', 'emailList', 'selectedItem'],
 	['appScope', 'emailList', 'value']],
@@ -98,33 +83,27 @@ this.a11= function(e){
 };
 
 this.a12= function(e){
-/* Line 78, atom-text="{$data.EmailAddress}" */
 	this.setLocalValue('text', Atom.get(this,'data.EmailAddress'), e);
 
 };
 
 this.a13= function(e){
-/* Line 79, atom-text="{($data.DateSent || '').toLocaleString()}" */
 	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
 
 };
 
 this.a14= function(e){
-/* Line 81, atom-event-click="{ {alert: $data.EmailError} }" */
 	this.setLocalValue('eventClick',  {alert: Atom.get(this,'data.EmailError')} , e);
-/* Line 83, style-display="{$data.EmailError ? '' : 'none'}" */
 	e.style['Display'] = Atom.get(this,'data.EmailError') ? '' : 'none';
 
 };
 
 this.a15= function(e){
-/* Line 94, style-display="[$appScope.start ? '' : 'none']" */
 	this.bind(e,'styleDisplay',[
 	['appScope', 'start']],
 			false, function(v1){
 				 return v1 ? '' : 'none'; 
 			});
-/* Line 95, atom-event-click="[ { appScope: { start: $appScope.start-1 } } ]" */
 	this.bind(e,'eventClick',[
 	['appScope', 'start']],
 			false, function(v1){
@@ -134,13 +113,9 @@ this.a15= function(e){
 };
 
 this.a16= function(e){
-/* Line 98, style-position="absolute" */
 	e.style['Position'] = 'absolute';
-/* Line 99, style-top="5px" */
 	e.style['Top'] = '5px';
-/* Line 100, style-right="5px" */
 	e.style['Right'] = '5px';
-/* Line 101, atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]" */
 	this.bind(e,'eventClick',[
 	['appScope', 'start']],
 			false, function(v1){

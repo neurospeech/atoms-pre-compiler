@@ -29,6 +29,8 @@ namespace AtomsPreCompiler
 
         public HtmlNode Root { get; set; }
 
+        public bool Debug { get; set; }
+
         public HtmlCompiler()
         {
 
@@ -230,7 +232,7 @@ namespace AtomsPreCompiler
         private void CompileTwoWayBinding(HtmlAttribute att, string name, string value, string events)
         {
             value = value.TrimStart('$', '@');
-            Writer.WriteLine("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
+            DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
             value = "[" + string.Join(", ", value.Split('.').Select( s=> "'" + s + "'" )) + "]";
 
@@ -245,9 +247,16 @@ namespace AtomsPreCompiler
             AttributesToDelete.Add(att);
         }
 
+        private void DebugLog(string format, params object[] args)
+        {
+            if (Debug) {
+                Writer.WriteLine(format, args);
+            }
+        }
+
         private void CompileOneTimeBinding(HtmlAttribute att, string name, string value)
         {
-            Writer.WriteLine("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
+            DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
             value = bindingRegex.Replace(value, (s) => "Atom.get(this,'" + s.Value.Substring(1) + "')");
 
@@ -283,7 +292,7 @@ namespace AtomsPreCompiler
                 return;
             }
 
-            Writer.WriteLine("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
+            DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
             if (value == variables.First().Item2)
             {
                 // no function.. simple binding...
@@ -322,7 +331,7 @@ namespace AtomsPreCompiler
             var script = element.InnerText.Trim();
             if (script.StartsWith("({") && script.EndsWith("})"))
             {
-                Writer.WriteLine("// Line " + element.Line);
+                DebugLog("// Line " + element.Line);
                 Writer.WriteLine("\tthis.initScope(" + script + ");");
 
                 NodesToDelete.Add(element);
