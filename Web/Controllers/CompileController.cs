@@ -17,5 +17,12 @@ namespace AtomsPreCompiler.Controllers
 
             return Json(pc);
         }
+
+        public ActionResult Component(string html) {
+            HtmlCompiler hc = new HtmlCompiler();
+            hc.Compile(html);
+
+            return Json(hc);
+        }
     }
 }
