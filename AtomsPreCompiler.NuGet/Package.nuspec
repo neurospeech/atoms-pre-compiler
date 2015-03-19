@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Atoms.PreCompiler</id>
+    <version>1.1.121</version>
+    <title>Atoms.js PreCompiler</title>
+    <authors>Akash</authors>
+    <owners></owners>
+    <description>
+      Atoms.js precompiler offers Atoms.js markup html to HTML5 compliant code generation with strict mode JavaScript along with generated 
+      JavaScript code to offer native JavaScript performance.
+    </description>
+    <releaseNotes>
+    </releaseNotes>
+    <summary>
+      Atoms.js mixed html markup to HTML5 compliant code generator
+    </summary>
+    <language>en-US</language>
+    <projectUrl>https://nuget.org/packages/AtomsPreCompiler.NuGet</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <copyright>Copyright  2015</copyright>
+    <dependencies>
+        <group targetFramework="net40">
+          <dependency id="HtmlAgilityPack" version="1.4.9" />
+        </group>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="..\AtomsPreCompiler\bin\Debug\NeuroSpeech.AtomsPreCompiler.dll" target="lib" />
+    <file src="..\AtomsPreCompiler\bin\Debug\NeuroSpeech.AtomsPreCompiler.pdb" target="lib" />
+    <file src="tools\" target="tools" />
+    <file src="content\" target="content" />
+  </files>
+</package>

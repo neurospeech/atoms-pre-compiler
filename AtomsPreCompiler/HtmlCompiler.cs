@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AtomsPreCompiler
+namespace NeuroSpeech.AtomsPreCompiler
 {
     public class HtmlCompiler
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{000E8F2D-24B9-49E4-81E8-09D3F3AF4C7F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AtomsPreCompiler</RootNamespace>
-    <AssemblyName>AtomsPreCompiler</AssemblyName>
+    <RootNamespace>NeuroSpeech.AtomsPreCompiler</RootNamespace>
+    <AssemblyName>NeuroSpeech.AtomsPreCompiler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

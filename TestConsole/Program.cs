@@ -1,4 +1,4 @@
-﻿using AtomsPreCompiler;
+﻿using NeuroSpeech.AtomsPreCompiler;
 using System;
 using System.Collections.Generic;
 using System.IO;

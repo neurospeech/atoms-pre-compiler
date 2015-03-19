@@ -1,5 +1,5 @@
 
-namespace AtomsPreCompiler
+namespace NeuroSpeech.AtomsPreCompiler
 {
     public class CompilerResult
     {
