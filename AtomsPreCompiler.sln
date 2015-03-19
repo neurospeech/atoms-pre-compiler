@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9D7517E-02CE-4801-8791-69C715AA5CFE}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
 		TestConsole\bin\Debug\test.html = TestConsole\bin\Debug\test.html
 	EndProjectSection
 EndProject

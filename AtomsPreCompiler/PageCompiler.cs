@@ -79,7 +79,7 @@ namespace AtomsPreCompiler
                 item.Remove();
             }
 
-            string script = "\r\n(function(window,WebAtoms){ \r\n WebAtoms.PageSetup = {};\r\n(function (window,WebAtoms,Atom,AtomPromise){\r\n "+ CompiledScript.InnerText + "}).call(window.WebAtoms.PageSetup,window,window.WebAtoms,window.Atom,window.AtomPromise); \r\n})(window,window.WebAtoms);";
+            string script = "\r\n(function(window,WebAtoms){ \r\n WebAtoms.PageSetup = WebAtoms.PageSetup || {};\r\n(function (window,WebAtoms,Atom,AtomPromise){\r\n "+ CompiledScript.InnerText + "}).call(window.WebAtoms.PageSetup,window,window.WebAtoms,window.Atom,window.AtomPromise); \r\n})(window,window.WebAtoms);";
 
             CompiledScript.RemoveAllChildren();
             CompiledScript.AppendChild(Document.CreateTextNode(script));
