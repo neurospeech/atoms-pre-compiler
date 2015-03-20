@@ -61,6 +61,28 @@ namespace TestConsole {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;container&gt;
+        ///    &lt;button class=&quot;atom-pager-first-button&quot;
+        ///            atom-is-enabled=&quot;[$owner.pages.length &gt; 1 &amp;amp;&amp;amp; $owner.currentPage]&quot;
+        ///            event-click=&quot;{$owner.goFirstCommand}&quot;
+        ///            style=&quot;float:left&quot;&gt;
+        ///        First
+        ///    &lt;/button&gt;
+        ///    &lt;span style=&quot;text-align:left&quot;&gt;
+        ///        &lt;button class=&quot;atom-pager-prev-button&quot;
+        ///                event-click=&quot;{$owner.goPrevCommand}&quot;
+        ///                atom-is-enabled=&quot;[$owner.currentPage]&quot;&gt;
+        ///            Prev
+        ///        &lt;/button&gt;
+        ///        &lt;span&gt;Goto: P [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Template {
+            get {
+                return ResourceManager.GetString("Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///
         ///&lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;

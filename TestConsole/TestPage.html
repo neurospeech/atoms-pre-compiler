@@ -49,7 +49,7 @@
                                atom-text="{$data.EmailID}"
                                target="_blank"></a>
                         </td>
-                        <td atom-text="{$data.ErrorDetails ? 'Yes' : 'No'}"></td>
+                        <td atom-text="{ 1 &amp;&amp; $data.ErrorDetails ? 'Yes' : 'No'}"></td>
                         <td atom-text="{$data.Subject}"></td>
                         <td atom-text="{$data.FromName}"></td>
                         <td atom-text="{$data.EmailType}"></td>

@@ -59,6 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Template.html" />
     <Content Include="TestPage.html" />
   </ItemGroup>
   <ItemGroup>

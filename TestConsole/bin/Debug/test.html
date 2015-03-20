@@ -26,10 +26,8 @@ this.a2= function(e){
 
 this.a3= function(e){
 /* Line 27, atom-name="emailList" */
-/* Setting Constant - Ignoring Promise */
 	this.setLocalValue('name', 'emailList', e);
 /* Line 29, atom-value-path="EmailID" */
-/* Setting Constant - Ignoring Promise */
 	this.setLocalValue('valuePath', 'EmailID', e);
 /* Line 30, atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), 
              orderBy:'EmailID desc', start:$appScope.start*$appScope.size, size:$appScope.size })]" */
@@ -53,8 +51,8 @@ this.a4= function(e){
 };
 
 this.a5= function(e){
-/* Line 52, atom-text="{$data.ErrorDetails ? 'Yes' : 'No'}" */
-	this.setLocalValue('text', Atom.get(this,'data.ErrorDetails') ? 'Yes' : 'No', e);
+/* Line 52, atom-text="{ 1 &amp;&amp; $data.ErrorDetails ? 'Yes' : 'No'}" */
+	this.setLocalValue('text',  1 && Atom.get(this,'data.ErrorDetails') ? 'Yes' : 'No', e);
 
 };
 
@@ -143,13 +141,10 @@ this.a16= function(e){
 
 this.a17= function(e){
 /* Line 103, style-position="absolute" */
-/* Setting Constant - Ignoring Promise */
 	e.style['position'] = 'absolute';
 /* Line 104, style-top="5px" */
-/* Setting Constant - Ignoring Promise */
 	e.style['top'] = '5px';
 /* Line 105, style-right="5px" */
-/* Setting Constant - Ignoring Promise */
 	e.style['right'] = '5px';
 /* Line 106, atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]" */
 	this.bind(e,'eventClick',[

@@ -21,11 +21,12 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         public int Index { get; set; }
 
+        public string Prefix { get; set; }
 
         public List<HtmlNode> NodesToDelete { get; set; }
         public List<HtmlAttribute> AttributesToDelete { get; set; }
 
-        public List<StringBuilder> CompiledScripts { get; set; }
+        public List<ScriptItem> CompiledScripts { get; set; }
 
         public HtmlNode Root { get; set; }
 
@@ -33,12 +34,13 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         public HtmlCompiler()
         {
-
+            Prefix = "a";
         }
 
         public CompilerResult Compile(string html) {
 
-            this.CompiledScripts = new List<StringBuilder>();
+            Writer = null;
+            this.CompiledScripts = new List<ScriptItem>();
 
             this.Document = new HtmlDocument();
             Document.LoadHtml(html);
@@ -76,7 +78,8 @@ namespace NeuroSpeech.AtomsPreCompiler
                 Document.Save(sw);
                 return new CompilerResult{ 
                     Document = sw.ToString(),
-                    Script = string.Join("\r\n", CompiledScripts.Select((x, i) => x.Length > 0 ? "this.a" + (i + 1) + "= function(e){\r\n" + x.ToString() + "\r\n};\r\n" : ""))
+                    JsonMLDocument = JsonML.Compile(Document),
+                    Script = string.Join("\r\n", CompiledScripts.Select((x, i) => x.StringBuilder.Length > 0 ? "this." + x.Key + "= function(e){\r\n" + x.StringBuilder.ToString() + "\r\n};\r\n" : ""))
                 };
             }
         }
@@ -103,9 +106,9 @@ namespace NeuroSpeech.AtomsPreCompiler
                 if (!string.IsNullOrWhiteSpace(lastScript))
                 {
 
-                    Writer = new StringWriter();
-                    CompiledScripts.Add(Writer.GetStringBuilder());
                     Index++;
+                    Writer = new StringWriter();
+                    CompiledScripts.Add(new ScriptItem { Key=Prefix + Index, StringBuilder = Writer.GetStringBuilder() });
                     return;
 
                 }
@@ -118,7 +121,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
 
                 Writer = new StringWriter();
-                CompiledScripts.Add(Writer.GetStringBuilder());
+                CompiledScripts.Add(new ScriptItem { Key = Prefix + Index, StringBuilder = Writer.GetStringBuilder() });
             }
 
 
@@ -152,13 +155,13 @@ namespace NeuroSpeech.AtomsPreCompiler
             }
 
             if (Writer.GetStringBuilder().ToString().Trim().Length > 0) {
-                element.Attributes.Add("data-atom-init", "a"+ Index );
+                element.Attributes.Add("data-atom-init", Prefix + Index );
             }
         }
 
         private void CompileAttribute(HtmlNode element, string name, HtmlAttribute att)
         {
-            if (!(name.StartsWith("atom-") || name.StartsWith("style-")))
+            if (!(name.StartsWith("atom-") || name.StartsWith("style-") || name.StartsWith("event-")))
                 return;
 
             if (name == "atom-type" || name == "atom-dock" || name == "atom-template-name" || name == "atom-local-scope")
@@ -234,6 +237,9 @@ namespace NeuroSpeech.AtomsPreCompiler
         private void CompileTwoWayBinding(HtmlAttribute att, string name, string value, string events)
         {
             value = value.TrimStart('$', '@');
+
+            value = HtmlEntity.DeEntitize(value);
+
             DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
             value = "[" + string.Join(", ", value.Split('.').Select( s=> "'" + s + "'" )) + "]";
@@ -259,6 +265,8 @@ namespace NeuroSpeech.AtomsPreCompiler
         private void CompileOneTimeBinding(HtmlAttribute att, string name, string value, bool constant = false)
         {
             DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
+
+            value = HtmlEntity.DeEntitize(value);
 
             value = bindingRegex.Replace(value, (s) => "Atom.get(this,'" + s.Value.Substring(1) + "')");
 
@@ -303,6 +311,9 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         private void CompileOneWayBinding(HtmlAttribute att, string name, string value)
         {
+
+            value = HtmlEntity.DeEntitize(value);
+
             List<Tuple<string, string>> variables = new List<Tuple<string, string>>();
             value = bindingRegex.Replace(value, (s) => {
                 var v = variables.FirstOrDefault(x => "$" + x.Item1 == s.Value);
@@ -356,9 +367,14 @@ namespace NeuroSpeech.AtomsPreCompiler
         private void CompileScript(HtmlNode element)
         {
             var script = element.InnerText.Trim();
+
+
             if (script.StartsWith("({") && script.EndsWith("})"))
             {
                 DebugLog("// Line " + element.Line);
+
+                script = HtmlEntity.DeEntitize(script);
+
                 Writer.WriteLine("\tthis.initScope(" + script + ");");
 
                 NodesToDelete.Add(element);
@@ -366,5 +382,10 @@ namespace NeuroSpeech.AtomsPreCompiler
         }
 
 
+    }
+
+    public class ScriptItem {
+        public string Key { get; set; }
+        public StringBuilder StringBuilder { get; set; }
     }
 }

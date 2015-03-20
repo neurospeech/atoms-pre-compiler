@@ -45,6 +45,7 @@
     <Compile Include="CompilerResult.cs" />
     <Compile Include="CompilerService.cs" />
     <Compile Include="HtmlCompiler.cs" />
+    <Compile Include="JsonML.cs" />
     <Compile Include="PageCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringHelper.cs" />
