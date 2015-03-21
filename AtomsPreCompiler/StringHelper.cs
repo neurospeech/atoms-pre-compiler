@@ -29,5 +29,13 @@ namespace NeuroSpeech.AtomsPreCompiler
             var t = string.Join("", a.ToLowerInvariant().Split('-').Select( (s,i)   => i==0 ? s : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant().Trim())));
             return t;
         }
+
+        internal static string EscapeBinding(this string n) {
+            n = n.Substring(1);
+            if (n.StartsWith("owner.", StringComparison.OrdinalIgnoreCase)) {
+                n = n.Substring(6);
+            }
+            return n;
+        }
     }
 }

@@ -268,7 +268,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
             value = HtmlEntity.DeEntitize(value);
 
-            value = bindingRegex.Replace(value, (s) => "Atom.get(this,'" + s.Value.Substring(1) + "')");
+            value = bindingRegex.Replace(value, (s) => "Atom.get(this,'" + s.Value.EscapeBinding() + "')");
 
             // only if it is constant, ignore setLocalValue
             // setLocalValue is necessary to evaluate promise value
@@ -309,6 +309,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         public int BindingIndex { get; set; }
 
+
         private void CompileOneWayBinding(HtmlAttribute att, string name, string value)
         {
 
@@ -318,7 +319,7 @@ namespace NeuroSpeech.AtomsPreCompiler
             value = bindingRegex.Replace(value, (s) => {
                 var v = variables.FirstOrDefault(x => "$" + x.Item1 == s.Value);
                 if (v == null) {
-                    v = new Tuple<string, string>(s.Value.Substring(1), "v" + (variables.Count + 1));
+                    v = new Tuple<string, string>(s.Value.EscapeBinding(), "v" + (variables.Count + 1));
                     variables.Add(v);
                 }
                 return v.Item2;
