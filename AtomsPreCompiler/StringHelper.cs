@@ -31,7 +31,10 @@ namespace NeuroSpeech.AtomsPreCompiler
         }
 
         internal static string EscapeBinding(this string n) {
-            n = n.Substring(1);
+            if (n.StartsWith("$"))
+            {
+                n = n.Substring(1);
+            }
             if (n.StartsWith("owner.", StringComparison.OrdinalIgnoreCase)) {
                 n = n.Substring(6);
             }

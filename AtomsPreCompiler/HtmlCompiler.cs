@@ -236,7 +236,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         private void CompileTwoWayBinding(HtmlAttribute att, string name, string value, string events)
         {
-            value = value.TrimStart('$', '@');
+            value = value.TrimStart('$', '@').EscapeBinding();
 
             value = HtmlEntity.DeEntitize(value);
 
