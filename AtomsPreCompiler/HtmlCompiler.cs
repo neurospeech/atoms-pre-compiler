@@ -58,7 +58,12 @@ namespace NeuroSpeech.AtomsPreCompiler
             }
 
 
-            return CreateCompilerResult();
+            var r = CreateCompilerResult();
+            if (string.IsNullOrWhiteSpace(r.Script))
+            {
+                r.Document = html;
+            }
+            return r;
         }
 
         protected virtual void OnBeforeCompile()

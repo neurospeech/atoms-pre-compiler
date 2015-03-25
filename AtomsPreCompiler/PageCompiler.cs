@@ -43,7 +43,10 @@ namespace NeuroSpeech.AtomsPreCompiler
         {
 
             var result = base.CreateCompilerResult();
- 	
+
+            if (string.IsNullOrWhiteSpace(result.Script))
+                return result;
+
             var pageScript = Document.CreateElement("SCRIPT");
             pageScript.Attributes.Add("type", "text/javascript");
 
