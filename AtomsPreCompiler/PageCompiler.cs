@@ -64,6 +64,92 @@ namespace NeuroSpeech.AtomsPreCompiler
             return result;
         }
 
+        protected override void ProcessFormFields(HtmlNode element)
+        {
+
+            var type = element.GetAtomType();
+
+            if (IsFormLayout(element))
+            {
+                CreateFieldTemplate(element);
+            }
+
+
+            foreach (var child in element.ChildNodes)
+            {
+                ProcessFormFields(child);
+            }
+        }
+
+        private bool IsFormLayout(HtmlNode element) {
+            var type = element.GetAtomType();
+            switch (type)
+            {
+                case "AtomFormLayout":
+                case "AtomFormRow":
+                case "AtomFormTab":
+                case "AtomFormGridLayout":
+                case "AtomFormVerticalLayout":
+                    return true;
+            }
+            return false;
+        }
+
+        private void CreateFieldTemplate(HtmlNode element)
+        {
+            foreach (var child in element.ChildNodes.ToArray())
+            {
+                if (child is HtmlTextNode)
+                    continue;
+                if (IsFormLayout(child)) {
+                    continue;
+                }
+                var c = Document.CreateElement("div");
+                c.Attributes.Add("data-atom-type", "AtomFormField");
+                element.AppendChild(c);
+                child.Remove();
+
+                foreach (var at in child.Attributes.ToArray())
+                {
+                    string name = at.Name;
+                    if (IsFormFieldAttribute(name))
+                    {
+                        at.Remove();
+                        c.Attributes.Add(at);
+                    }
+                    else {
+                        if (name == "atom-value") {
+                            if (at.Value.StartsWith("$[")) {
+                                c.Attributes.Add("atom-field-value", at.Value);
+                            }
+                        }
+                    }
+                }
+
+                c.AppendChild(child);
+            }
+        }
+
+        private bool IsFormFieldAttribute(string name)
+        {
+            switch (name)
+            {
+                case "atom-label":
+                case "atom-description":
+                case "atom-required":
+                case "atom-regex":
+                case "atom-data-type":
+                case "atom-is-valid":
+                case "atom-field-value":
+                case "atom-field-visible":
+                case "atom-field-class":
+                case "atom-error":
+                    return true;
+                default:
+                    break;
+            }
+            return false;
+        }
 
 
     }

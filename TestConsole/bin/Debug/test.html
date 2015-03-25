@@ -10,7 +10,7 @@
 (function (window,WebAtoms,Atom,AtomPromise){
  this.a1= function(e){
 // Line 10
-	this.initScope(({
+	this.set_scope(({
                 start: 0,
                 size:100,
                 talentID:0
@@ -25,8 +25,6 @@ this.a2= function(e){
 };
 
 this.a3= function(e){
-/* Line 27, atom-name="emailList" */
-	this.setLocalValue('name', 'emailList', e);
 /* Line 29, atom-value-path="EmailID" */
 	this.setLocalValue('valuePath', 'EmailID', e);
 /* Line 30, atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), 
@@ -124,13 +122,29 @@ this.a15= function(e){
 };
 
 this.a16= function(e){
-/* Line 99, style-display="[$appScope.start ? '' : 'none']" */
+/* Line 96, atom-label="First Name:" */
+	this.setLocalValue('label', 'First Name:', e);
+/* Line 96, atom-required="true" */
+	this.setLocalValue('required', 'true', e);
+/* Line 0, atom-field-value="$[data.FirstName]" */
+	this.bind(e,'fieldValue',['data', 'FirstName'],true)
+
+};
+
+this.a17= function(e){
+/* Line 96, atom-value="$[data.FirstName]" */
+	this.bind(e,'value',['data', 'FirstName'],true)
+
+};
+
+this.a18= function(e){
+/* Line 104, style-display="[$appScope.start ? '' : 'none']" */
 	this.bind(e,'styleDisplay',[
 	['appScope', 'start']],
 			false, function(v1){
 				 return v1 ? '' : 'none'; 
 			});
-/* Line 100, atom-event-click="[ { appScope: { start: $appScope.start-1 } } ]" */
+/* Line 105, atom-event-click="[ { appScope: { start: $appScope.start-1 } } ]" */
 	this.bind(e,'eventClick',[
 	['appScope', 'start']],
 			false, function(v1){
@@ -139,14 +153,14 @@ this.a16= function(e){
 
 };
 
-this.a17= function(e){
-/* Line 103, style-position="absolute" */
+this.a19= function(e){
+/* Line 108, style-position="absolute" */
 	e.style['position'] = 'absolute';
-/* Line 104, style-top="5px" */
+/* Line 109, style-top="5px" */
 	e.style['top'] = '5px';
-/* Line 105, style-right="5px" */
+/* Line 110, style-right="5px" */
 	e.style['right'] = '5px';
-/* Line 106, atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]" */
+/* Line 111, atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]" */
 	this.bind(e,'eventClick',[
 	['appScope', 'start']],
 			false, function(v1){
@@ -158,7 +172,7 @@ this.a17= function(e){
 }).call(window.WebAtoms.PageSetup,window,window.WebAtoms,window.Atom,window.AtomPromise); 
 })(window,window.WebAtoms);</script></head>
 <body>
-    <div data-atom-type="AtomApplication">
+    <div data-atom-type="AtomApplication" data-atom-init="a1">
         
 
         <div data-atom-dock="Top" style="height:30px">
@@ -168,7 +182,7 @@ this.a17= function(e){
             <button>Search</button>
         </div>
 
-        <div data-atom-dock="Fill" data-atom-type="AtomListBox" style="overflow:auto" data-atom-init="a3">
+        <div data-atom-dock="Fill" data-atom-name="emailList" data-atom-type="AtomListBox" style="overflow:auto" data-atom-init="a3">
             <table>
                 <thead>
                     <tr>
@@ -223,16 +237,24 @@ this.a17= function(e){
 
         <div data-atom-type="AtomControl" data-atom-init="a15">
 
+            <div data-atom-type="AtomFormLayout">
+                
+
+            <div data-atom-type="AtomFormField" data-atom-init="a16"><input data-atom-init="a17"></div></div>
+
         </div>
 
         <div style="height:30px;" data-atom-dock="Bottom">
-            <button data-atom-init="a16">
+            <button data-atom-init="a18">
                 Prev
             </button>
-            <button data-atom-init="a17">
+            <button data-atom-init="a19">
                 Next
             </button>
         </div>
-        </div>
+
+
+
+    </div>
 </body>
 </html>

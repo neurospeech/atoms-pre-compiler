@@ -92,6 +92,11 @@
         <div atom-type="AtomControl"
              atom-text="{ AtomPromise.get('/test.html') }">
 
+            <div atom-type="AtomFormLayout">
+                <input atom-label="First Name:" atom-required="true" atom-value="$[data.FirstName]"/>
+
+            </div>
+
         </div>
 
         <div style="height:30px;"
@@ -107,6 +112,9 @@
                 Next
             </button>
         </div>
-        </div>
+
+
+
+    </div>
 </body>
 </html>

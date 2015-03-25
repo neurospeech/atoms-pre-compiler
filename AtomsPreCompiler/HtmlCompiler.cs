@@ -47,6 +47,8 @@ namespace NeuroSpeech.AtomsPreCompiler
 
             Root = Document.DocumentNode;
 
+            ProcessFormFields(Root);
+
             OnBeforeCompile();
 
             NodesToDelete = new List<HtmlNode>();
@@ -70,6 +72,11 @@ namespace NeuroSpeech.AtomsPreCompiler
             OnAfterCompile();
 
             return CreateCompilerResult();
+        }
+
+        protected virtual void ProcessFormFields(HtmlNode Root)
+        {
+            
         }
 
         protected virtual CompilerResult CreateCompilerResult()
@@ -133,6 +140,7 @@ namespace NeuroSpeech.AtomsPreCompiler
             foreach (var element in all)
             {
                 CompileElement(element);
+
             }
         }
 
@@ -154,8 +162,9 @@ namespace NeuroSpeech.AtomsPreCompiler
                 }
             }
 
-            if (Writer.GetStringBuilder().ToString().Trim().Length > 0) {
-                element.Attributes.Add("data-atom-init", Prefix + Index );
+            if (Writer.GetStringBuilder().Length > 0)
+            {
+                element.Attributes.Add("data-atom-init", Prefix + Index);
             }
         }
 
@@ -164,7 +173,11 @@ namespace NeuroSpeech.AtomsPreCompiler
             if (!(name.StartsWith("atom-") || name.StartsWith("style-") || name.StartsWith("event-")))
                 return;
 
-            if (name == "atom-type" || name == "atom-dock" || name == "atom-template-name" || name == "atom-local-scope")
+            if (name == "atom-name" 
+                || name == "atom-type" 
+                || name == "atom-dock" 
+                || name == "atom-template-name" 
+                || name == "atom-local-scope")
             {
                 // ignore...
                 return;
@@ -372,11 +385,17 @@ namespace NeuroSpeech.AtomsPreCompiler
 
             if (script.StartsWith("({") && script.EndsWith("})"))
             {
+
+                var p = element.ParentNode;
+                if (!p.Attributes.Any(a => a.Name.EqualsIgnoreCase("data-atom-init"))) {
+                    p.Attributes.Add("data-atom-init", Prefix + Index);
+                }
+
                 DebugLog("// Line " + element.Line);
 
                 script = HtmlEntity.DeEntitize(script);
 
-                Writer.WriteLine("\tthis.initScope(" + script + ");");
+                Writer.WriteLine("\tthis.set_scope(" + script + ");");
 
                 NodesToDelete.Add(element);
             }

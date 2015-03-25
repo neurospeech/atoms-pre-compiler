@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -39,6 +40,10 @@ namespace NeuroSpeech.AtomsPreCompiler
                 n = n.Substring(6);
             }
             return n;
+        }
+
+        internal static string GetAtomType(this HtmlNode element) {
+            return element.Attributes.Where(x => x.Name == "atom-type").Select(x => x.Value).FirstOrDefault();
         }
     }
 }
