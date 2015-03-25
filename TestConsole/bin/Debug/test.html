@@ -15,160 +15,146 @@
                 size:100,
                 talentID:0
             }));
-
-};
-
-this.a2= function(e){
-/* Line 22, atom-value="$[appScope.talentID]" */
-	this.bind(e,'value',['appScope', 'talentID'],true)
-
+// Line 26
+	this.set_scope(({
+                start: 0,
+                size:100,
+                talentID:0
+            }));
 };
 
 this.a3= function(e){
-/* Line 29, atom-value-path="EmailID" */
+/* Line 22, atom-value="$[appScope.talentID]" */
+	this.bind(e,'value',['appScope', 'talentID'],true)
+};
+
+this.a4= function(e){
+/* Line 37, atom-value-path="EmailID" */
 	this.setLocalValue('valuePath', 'EmailID', e);
-/* Line 30, atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), 
+/* Line 38, atom-items="[AtomPromise.json('/admin/entity/email/query',{ query: ($appScope.talentID ? { TalentID: $appScope.talentID } : {  }), 
              orderBy:'EmailID desc', start:$appScope.start*$appScope.size, size:$appScope.size })]" */
 	this.bind(e,'items',[
 	['appScope', 'talentID'],
 	['appScope', 'start'],
 	['appScope', 'size']],
-			false, function(v1,v2,v3){
+			0, function(v1,v2,v3){
 				 return AtomPromise.json('/admin/entity/email/query',{ query: (v1 ? { TalentID: v1 } : {  }), 
              orderBy:'EmailID desc', start:v2*v3, size:v3 }); 
 			});
-
-};
-
-this.a4= function(e){
-/* Line 48, atom-href="{'/admin/EmailQueue/preview/' + $data.EmailID}" */
-	this.setLocalValue('href', '/admin/EmailQueue/preview/' + Atom.get(this,'data.EmailID'), e);
-/* Line 49, atom-text="{$data.EmailID}" */
-	this.setLocalValue('text', Atom.get(this,'data.EmailID'), e);
-
-};
-
-this.a5= function(e){
-/* Line 52, atom-text="{ 1 &amp;&amp; $data.ErrorDetails ? 'Yes' : 'No'}" */
-	this.setLocalValue('text',  1 && Atom.get(this,'data.ErrorDetails') ? 'Yes' : 'No', e);
-
-};
-
-this.a6= function(e){
-/* Line 53, atom-text="{$data.Subject}" */
-	this.setLocalValue('text', Atom.get(this,'data.Subject'), e);
-
 };
 
 this.a7= function(e){
-/* Line 54, atom-text="{$data.FromName}" */
-	this.setLocalValue('text', Atom.get(this,'data.FromName'), e);
-
+/* Line 56, atom-href="{'/admin/EmailQueue/preview/' + $data.EmailID}" */
+	this.setLocalValue('href', '/admin/EmailQueue/preview/' + Atom.get(this,'data.EmailID'), e);
+/* Line 57, atom-text="{$data.EmailID}" */
+	this.setLocalValue('text', Atom.get(this,'data.EmailID'), e);
 };
 
 this.a8= function(e){
-/* Line 55, atom-text="{$data.EmailType}" */
-	this.setLocalValue('text', Atom.get(this,'data.EmailType'), e);
-
+/* Line 60, atom-text="{ 1 &amp;&amp; $data.ErrorDetails ? 'Yes' : 'No'}" */
+	this.setLocalValue('text',  1 && Atom.get(this,'data.ErrorDetails') ? 'Yes' : 'No', e);
 };
 
 this.a9= function(e){
-/* Line 56, atom-text="{$data.MailPath}" */
-	this.setLocalValue('text', Atom.get(this,'data.MailPath'), e);
-
+/* Line 61, atom-text="{$data.Subject}" */
+	this.setLocalValue('text', Atom.get(this,'data.Subject'), e);
 };
 
 this.a10= function(e){
-/* Line 57, atom-text="{($data.DateSent || '').toLocaleString()}" */
-	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
-
+/* Line 62, atom-text="{$data.FromName}" */
+	this.setLocalValue('text', Atom.get(this,'data.FromName'), e);
 };
 
 this.a11= function(e){
-/* Line 67, atom-items="[!$scope.emailList.selectedItem || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: $appScope.emailList.value } })]" */
-	this.bind(e,'items',[
-	['scope', 'emailList', 'selectedItem'],
-	['appScope', 'emailList', 'value']],
-			false, function(v1,v2){
-				 return !v1 || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: v2 } }); 
-			});
-
+/* Line 63, atom-text="{$data.EmailType}" */
+	this.setLocalValue('text', Atom.get(this,'data.EmailType'), e);
 };
 
 this.a12= function(e){
-/* Line 78, atom-text="{$data.EmailAddress}" */
-	this.setLocalValue('text', Atom.get(this,'data.EmailAddress'), e);
-
+/* Line 64, atom-text="{$data.MailPath}" */
+	this.setLocalValue('text', Atom.get(this,'data.MailPath'), e);
 };
 
 this.a13= function(e){
-/* Line 79, atom-text="{($data.DateSent || '').toLocaleString()}" */
+/* Line 65, atom-text="{($data.DateSent || '').toLocaleString()}" */
 	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
-
 };
 
 this.a14= function(e){
-/* Line 81, atom-event-click="{ {alert: $data.EmailError} }" */
-	this.setLocalValue('eventClick',  {alert: Atom.get(this,'data.EmailError')} , e);
-/* Line 83, style-display="{$data.EmailError ? '' : 'none'}" */
-	this.setLocalValue('styleDisplay', Atom.get(this,'data.EmailError') ? '' : 'none', e);
-
-};
-
-this.a15= function(e){
-/* Line 93, atom-text="{ AtomPromise.get('/test.html') }" */
-	this.setLocalValue('text',  AtomPromise.get('/test.html') , e);
-
-};
-
-this.a16= function(e){
-/* Line 96, atom-label="First Name:" */
-	this.setLocalValue('label', 'First Name:', e);
-/* Line 96, atom-required="true" */
-	this.setLocalValue('required', 'true', e);
-/* Line 0, atom-field-value="$[data.FirstName]" */
-	this.bind(e,'fieldValue',['data', 'FirstName'],true)
-
+/* Line 75, atom-items="[!$scope.emailList.selectedItem || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: $appScope.emailList.value } })]" */
+	this.bind(e,'items',[
+	['scope', 'emailList', 'selectedItem'],
+	['appScope', 'emailList', 'value']],
+			0, function(v1,v2){
+				 return !v1 || AtomPromise.json('/admin/entity/emailrecipient/query', { orderBy:'EmailRecipientID desc', query: { EmailID: v2 } }); 
+			});
 };
 
 this.a17= function(e){
-/* Line 96, atom-value="$[data.FirstName]" */
-	this.bind(e,'value',['data', 'FirstName'],true)
-
+/* Line 86, atom-text="{$data.EmailAddress}" */
+	this.setLocalValue('text', Atom.get(this,'data.EmailAddress'), e);
 };
 
 this.a18= function(e){
-/* Line 104, style-display="[$appScope.start ? '' : 'none']" */
-	this.bind(e,'styleDisplay',[
-	['appScope', 'start']],
-			false, function(v1){
-				 return v1 ? '' : 'none'; 
-			});
-/* Line 105, atom-event-click="[ { appScope: { start: $appScope.start-1 } } ]" */
-	this.bind(e,'eventClick',[
-	['appScope', 'start']],
-			false, function(v1){
-				 return  { appScope: { start: v1-1 } } ; 
-			});
-
+/* Line 87, atom-text="{($data.DateSent || '').toLocaleString()}" */
+	this.setLocalValue('text', (Atom.get(this,'data.DateSent') || '').toLocaleString(), e);
 };
 
 this.a19= function(e){
-/* Line 108, style-position="absolute" */
-	e.style['position'] = 'absolute';
-/* Line 109, style-top="5px" */
-	e.style['top'] = '5px';
-/* Line 110, style-right="5px" */
-	e.style['right'] = '5px';
-/* Line 111, atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]" */
-	this.bind(e,'eventClick',[
-	['appScope', 'start']],
-			false, function(v1){
-				 return  { appScope: { start: v1+1 } } ; 
-			});
-
+/* Line 89, atom-event-click="{ {alert: $data.EmailError} }" */
+	this.setLocalValue('eventClick',  {alert: Atom.get(this,'data.EmailError')} , e);
+/* Line 91, style-display="{$data.EmailError ? '' : 'none'}" */
+	this.setLocalValue('styleDisplay', Atom.get(this,'data.EmailError') ? '' : 'none', e);
 };
 
+this.a20= function(e){
+/* Line 101, atom-text="{ AtomPromise.get('/test.html') }" */
+	this.setLocalValue('text',  AtomPromise.get('/test.html') , e);
+};
+
+this.a22= function(e){
+/* Line 104, atom-label="First Name:" */
+	this.setLocalValue('label', 'First Name:', e);
+/* Line 104, atom-required="true" */
+	this.setLocalValue('required', 'true', e);
+/* Line 0, atom-field-value="$[data.FirstName]" */
+	this.bind(e,'fieldValue',['data', 'FirstName'],true)
+};
+
+this.a23= function(e){
+/* Line 104, atom-value="$[data.FirstName]" */
+	this.bind(e,'value',['data', 'FirstName'],true)
+};
+
+this.a25= function(e){
+/* Line 112, style-display="[$appScope.start ? '' : 'none']" */
+	this.bind(e,'styleDisplay',[
+	['appScope', 'start']],
+			0, function(v1){
+				 return v1 ? '' : 'none'; 
+			});
+/* Line 113, atom-event-click="[ { appScope: { start: $appScope.start-1 } } ]" */
+	this.bind(e,'eventClick',[
+	['appScope', 'start']],
+			0, function(v1){
+				 return  { appScope: { start: v1-1 } } ; 
+			});
+};
+
+this.a26= function(e){
+/* Line 116, style-position="absolute" */
+	e.style['position'] = 'absolute';
+/* Line 117, style-top="5px" */
+	e.style['top'] = '5px';
+/* Line 118, style-right="5px" */
+	e.style['right'] = '5px';
+/* Line 119, atom-event-click="[ { appScope: { start: $appScope.start+1 } } ]" */
+	this.bind(e,'eventClick',[
+	['appScope', 'start']],
+			0, function(v1){
+				 return  { appScope: { start: v1+1 } } ; 
+			});
+};
 }).call(window.WebAtoms.PageSetup,window,window.WebAtoms,window.Atom,window.AtomPromise); 
 })(window,window.WebAtoms);</script></head>
 <body>
@@ -178,11 +164,13 @@ this.a19= function(e){
         <div data-atom-dock="Top" style="height:30px">
 
             <span>Talent ID:</span>
-            <input type="search" data-atom-init="a2">
+            <input type="search" data-atom-init="a3">
             <button>Search</button>
         </div>
 
-        <div data-atom-dock="Fill" data-atom-name="emailList" data-atom-type="AtomListBox" style="overflow:auto" data-atom-init="a3">
+        
+
+        <div data-atom-dock="Fill" data-atom-name="emailList" data-atom-type="AtomListBox" style="overflow:auto" data-atom-init="a4">
             <table>
                 <thead>
                     <tr>
@@ -198,21 +186,21 @@ this.a19= function(e){
                 <tbody data-atom-presenter="itemsPresenter">
                     <tr data-atom-template="itemTemplate">
                         <td>
-                            <a target="_blank" data-atom-init="a4"></a>
+                            <a target="_blank" data-atom-init="a7"></a>
                         </td>
-                        <td data-atom-init="a5"></td>
-                        <td data-atom-init="a6"></td>
-                        <td data-atom-init="a7"></td>
                         <td data-atom-init="a8"></td>
                         <td data-atom-init="a9"></td>
                         <td data-atom-init="a10"></td>
+                        <td data-atom-init="a11"></td>
+                        <td data-atom-init="a12"></td>
+                        <td data-atom-init="a13"></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div data-atom-dock="Right" style="width:300px;" data-atom-type="AtomItemsControl" data-atom-init="a11">
+        <div data-atom-dock="Right" style="width:300px;" data-atom-type="AtomItemsControl" data-atom-init="a14">
             <table>
                 <thead>
                     <tr>
@@ -223,10 +211,10 @@ this.a19= function(e){
                 </thead>
                 <tbody data-atom-presenter="itemsPresenter">
                     <tr data-atom-template="itemTemplate">
-                        <td data-atom-init="a12"></td>
-                        <td data-atom-init="a13"></td>
+                        <td data-atom-init="a17"></td>
+                        <td data-atom-init="a18"></td>
                         <td>
-                            <button style="display:none" data-atom-init="a14">
+                            <button style="display:none" data-atom-init="a19">
                                 Error
                             </button>
                         </td>
@@ -235,20 +223,20 @@ this.a19= function(e){
             </table>
         </div>
 
-        <div data-atom-type="AtomControl" data-atom-init="a15">
+        <div data-atom-type="AtomControl" data-atom-init="a20">
 
             <div data-atom-type="AtomFormLayout">
                 
 
-            <div data-atom-type="AtomFormField" data-atom-init="a16"><input data-atom-init="a17"></div></div>
+            <div data-atom-type="AtomFormField" data-atom-init="a22"><input data-atom-init="a23"></div></div>
 
         </div>
 
         <div style="height:30px;" data-atom-dock="Bottom">
-            <button data-atom-init="a18">
+            <button data-atom-init="a25">
                 Prev
             </button>
-            <button data-atom-init="a19">
+            <button data-atom-init="a26">
                 Next
             </button>
         </div>

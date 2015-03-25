@@ -64,9 +64,9 @@ namespace NeuroSpeech.AtomsPreCompiler
             return result;
         }
 
-        protected override void ProcessFormFields(HtmlNode element)
+        protected override void BeforeCompileNode(HtmlNode element)
         {
-
+            base.BeforeCompileNode(element);
             var type = element.GetAtomType();
 
             if (IsFormLayout(element))
@@ -74,11 +74,6 @@ namespace NeuroSpeech.AtomsPreCompiler
                 CreateFieldTemplate(element);
             }
 
-
-            foreach (var child in element.ChildNodes)
-            {
-                ProcessFormFields(child);
-            }
         }
 
         private bool IsFormLayout(HtmlNode element) {

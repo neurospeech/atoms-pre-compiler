@@ -16,19 +16,15 @@ namespace NeuroSpeech.AtomsPreCompiler
         public HtmlDocument Document { get; set; }
 
 
-        public StringWriter Writer { get; set; }
-
-
-        public int Index { get; set; }
 
         public string Prefix { get; set; }
+
+        public int Index { get; set; }
 
         public List<HtmlNode> NodesToDelete { get; set; }
         public List<HtmlAttribute> AttributesToDelete { get; set; }
 
         public List<ScriptItem> CompiledScripts { get; set; }
-
-        public HtmlNode Root { get; set; }
 
         public bool Debug { get; set; }
 
@@ -39,26 +35,18 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         public CompilerResult Compile(string html) {
 
-            Writer = null;
             this.CompiledScripts = new List<ScriptItem>();
 
             this.Document = new HtmlDocument();
             Document.LoadHtml(html);
 
-            Root = Document.DocumentNode;
-
-            ProcessFormFields(Root);
-
-            OnBeforeCompile();
 
             NodesToDelete = new List<HtmlNode>();
             AttributesToDelete = new List<HtmlAttribute>();
 
-            CreateSetup();
+            OnBeforeCompile();
 
-            CompileElements();
-
-            CreateSetup();
+            CompileNode(Document.DocumentNode);
 
             foreach (var item in AttributesToDelete)
             {
@@ -69,15 +57,86 @@ namespace NeuroSpeech.AtomsPreCompiler
                 item.Remove();
             }
 
-            OnAfterCompile();
 
             return CreateCompilerResult();
         }
 
-        protected virtual void ProcessFormFields(HtmlNode Root)
+        protected virtual void OnBeforeCompile()
+        {
+        }
+
+        public ScriptItem Current { get; private set; }
+
+        public StringWriter Writer {
+            get {
+                return Current.Writer;
+            }
+        }
+
+        private void CompileNode(HtmlNode element)
+        {
+            if (element is HtmlTextNode)
+                return;
+
+            BeforeCompileNode(element);
+
+            if (element.Name.EqualsIgnoreCase("script"))
+            {
+                //CompileScript(element);
+                return;
+            }
+
+            ScriptItem script = null;
+
+            var scopeScripts = element.ChildNodes
+                .Where(x => x.Name.EqualsIgnoreCase("script"))
+                .ToList();
+
+            
+
+            if (element.Attributes.Any(e => e.Name.StartsWith("atom-")) || scopeScripts.Any())
+            {
+                script = new ScriptItem(Prefix + (Index + 1), element);
+                CompiledScripts.Add(script);
+                Index++;
+
+                Current = script;
+
+                foreach (var item in scopeScripts)
+                {
+                    CompileScript(item);
+                }
+            }
+
+
+
+            foreach (var att in element.Attributes)
+            {
+                CompileAttribute(element, att.Name.ToLower(), att);
+                if (att.Name.StartsWith("atom-"))
+                {
+                    att.Name = "data-" + att.Name;
+                }
+            }
+
+            foreach (var item in element.ChildNodes)
+            {
+                CompileNode(item);
+            }
+
+            Current = script;
+
+            if (Current!=null && !Current.IsEmpty) {
+                element.Attributes.Add("data-atom-init", Current.Key);
+            }
+
+        }
+
+        protected virtual void BeforeCompileNode(HtmlNode element)
         {
             
         }
+
 
         protected virtual CompilerResult CreateCompilerResult()
         {
@@ -86,87 +145,11 @@ namespace NeuroSpeech.AtomsPreCompiler
                 return new CompilerResult{ 
                     Document = sw.ToString(),
                     JsonMLDocument = JsonML.Compile(Document),
-                    Script = string.Join("\r\n", CompiledScripts.Select((x, i) => x.StringBuilder.Length > 0 ? "this." + x.Key + "= function(e){\r\n" + x.StringBuilder.ToString() + "\r\n};\r\n" : ""))
+                    Script = string.Join("\r\n", CompiledScripts.Select( x => !x.IsEmpty ? "this." + x.Key + "= function(e){\r\n" + x.Script + "\r\n};\r\n" : "").Where(x=> !string.IsNullOrWhiteSpace(x)))
                 };
             }
         }
 
-        protected virtual void OnBeforeCompile()
-        {
-            
-        }
-
-        protected virtual void OnAfterCompile()
-        {
-            
-        }
-
-        private void CreateSetup()
-        {
-
-            if (Writer != null)
-            {
-                // push...
-
-                var lastScript = Writer.GetStringBuilder().ToString().Trim();
-
-                if (!string.IsNullOrWhiteSpace(lastScript))
-                {
-
-                    Index++;
-                    Writer = new StringWriter();
-                    CompiledScripts.Add(new ScriptItem { Key=Prefix + Index, StringBuilder = Writer.GetStringBuilder() });
-                    return;
-
-                }
-
-
-            }
-            else
-            {
-                Index++;
-
-
-                Writer = new StringWriter();
-                CompiledScripts.Add(new ScriptItem { Key = Prefix + Index, StringBuilder = Writer.GetStringBuilder() });
-            }
-
-
-        }
-
-        private void CompileElements()
-        {
-            var all = Root.DescendantsAndSelf().ToList();
-            foreach (var element in all)
-            {
-                CompileElement(element);
-
-            }
-        }
-
-        private void CompileElement(HtmlNode element)
-        {
-            if (element.Name.EqualsIgnoreCase("script")) {
-                CompileScript(element);
-                return;
-            }
-
-            CreateSetup();
-
-
-            foreach (var att in element.Attributes)
-            {
-                CompileAttribute(element, att.Name.ToLower(), att);
-                if (att.Name.StartsWith("atom-")) {
-                    att.Name = "data-" + att.Name;
-                }
-            }
-
-            if (Writer.GetStringBuilder().Length > 0)
-            {
-                element.Attributes.Add("data-atom-init", Prefix + Index);
-            }
-        }
 
         private void CompileAttribute(HtmlNode element, string name, HtmlAttribute att)
         {
@@ -232,7 +215,7 @@ namespace NeuroSpeech.AtomsPreCompiler
                 return;
             }
 
-            CompileOneTimeBinding(att, name, "'" + value + "'",true);
+            CompileOneTimeBinding(att, name, "'" + value.Replace("'","\\'") + "'",true);
 
         }
 
@@ -351,7 +334,7 @@ namespace NeuroSpeech.AtomsPreCompiler
                 var bindingPath = string.Join(",", variables.Select(x => "\r\n\t[" + string.Join(", ", x.Item1.Split('.').Select(s => "'" + s + "'")) + "]"));
 
 
-                Writer.WriteLine("\tthis.bind(e,'{0}',{1},false);", name, bindingPath);
+                Writer.WriteLine("\tthis.bind(e,'{0}',{1});", name, bindingPath);
 
             }
             else
@@ -363,7 +346,7 @@ namespace NeuroSpeech.AtomsPreCompiler
                 var bindingPath = string.Join(",", variables.Select(x => "\r\n\t[" + string.Join(", ", x.Item1.Split('.').Select(s=> "'" + s + "'")) + "]"));
 
 
-                Writer.WriteLine("\tthis.bind(e,'{0}',[{1}],\r\n\t\t\tfalse, function({2}){{\r\n\t\t\t\t return {3}; \r\n\t\t\t}});",
+                Writer.WriteLine("\tthis.bind(e,'{0}',[{1}],\r\n\t\t\t0, function({2}){{\r\n\t\t\t\t return {3}; \r\n\t\t\t}});",
                     name,
                     bindingPath,
                     varList,
@@ -386,10 +369,6 @@ namespace NeuroSpeech.AtomsPreCompiler
             if (script.StartsWith("({") && script.EndsWith("})"))
             {
 
-                var p = element.ParentNode;
-                if (!p.Attributes.Any(a => a.Name.EqualsIgnoreCase("data-atom-init"))) {
-                    p.Attributes.Add("data-atom-init", Prefix + Index);
-                }
 
                 DebugLog("// Line " + element.Line);
 
@@ -404,8 +383,4 @@ namespace NeuroSpeech.AtomsPreCompiler
 
     }
 
-    public class ScriptItem {
-        public string Key { get; set; }
-        public StringBuilder StringBuilder { get; set; }
-    }
 }
