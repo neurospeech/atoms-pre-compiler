@@ -15,7 +15,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         public HtmlDocument Document { get; set; }
 
-
+        public string OriginalDocument { get; set; }
 
         public string Prefix { get; set; }
 
@@ -34,6 +34,13 @@ namespace NeuroSpeech.AtomsPreCompiler
         }
 
         public CompilerResult Compile(string html) {
+
+            OriginalDocument = html;
+            if (string.IsNullOrWhiteSpace(html))
+                return new CompilerResult {  
+                    Document = html, 
+                    Script = ""
+                };
 
             this.CompiledScripts = new List<ScriptItem>();
 
@@ -58,12 +65,7 @@ namespace NeuroSpeech.AtomsPreCompiler
             }
 
 
-            var r = CreateCompilerResult();
-            if (string.IsNullOrWhiteSpace(r.Script))
-            {
-                r.Document = html;
-            }
-            return r;
+            return CreateCompilerResult();
         }
 
         protected virtual void OnBeforeCompile()
@@ -74,7 +76,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         public StringWriter Writer {
             get {
-                return Current.Writer;
+                return Current==null ? null : Current.Writer;
             }
         }
 
@@ -99,7 +101,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
             
 
-            if (element.Attributes.Any(e => e.Name.StartsWith("atom-")) || scopeScripts.Any())
+            if (element.Attributes.Any(e => e.Name.StartsWith("atom-") || e.Name.StartsWith("event-") || e.Name.StartsWith("style-")) || scopeScripts.Any())
             {
                 script = new ScriptItem(Prefix + (Index + 1), element);
                 CompiledScripts.Add(script);
@@ -147,11 +149,17 @@ namespace NeuroSpeech.AtomsPreCompiler
         {
             using(StringWriter sw= new StringWriter()){
                 Document.Save(sw);
-                return new CompilerResult{ 
+                var r =  new CompilerResult{ 
                     Document = sw.ToString(),
                     JsonMLDocument = JsonML.Compile(Document),
                     Script = string.Join("\r\n", CompiledScripts.Select( x => !x.IsEmpty ? "this." + x.Key + "= function(e){\r\n" + x.Script + "\r\n};\r\n" : "").Where(x=> !string.IsNullOrWhiteSpace(x)))
                 };
+
+                if (string.IsNullOrWhiteSpace(r.Script)) {
+                    r.Document = OriginalDocument;
+                    
+                }
+                return r;
             }
         }
 
@@ -250,7 +258,7 @@ namespace NeuroSpeech.AtomsPreCompiler
                 Writer.WriteLine("\tthis.bind(e,'{0}',{1},true)",name,value);
             }
             else {
-                Writer.WriteLine("\tthis.bind(e,'{0}',{1},true,null,{2})", name, value, events);
+                Writer.WriteLine("\tthis.bind(e,'{0}',{1},true,null,'{2}')", name, value, events.Trim('(',')'));
             }
 
             AttributesToDelete.Add(att);
