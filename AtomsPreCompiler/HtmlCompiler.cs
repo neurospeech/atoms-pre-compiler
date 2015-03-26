@@ -228,7 +228,7 @@ namespace NeuroSpeech.AtomsPreCompiler
                 return;
             }
 
-            CompileOneTimeBinding(att, name, "'" + value.Replace("'","\\'") + "'",true);
+            CompileOneTimeBinding(att, name, value.ToEncodedString(),true);
 
         }
 
@@ -246,6 +246,9 @@ namespace NeuroSpeech.AtomsPreCompiler
         private void CompileTwoWayBinding(HtmlAttribute att, string name, string value, string events)
         {
             value = value.TrimStart('$', '@').EscapeBinding();
+
+            if (value.IsEmpty())
+                return;
 
             value = HtmlEntity.DeEntitize(value);
 
@@ -273,6 +276,9 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         private void CompileOneTimeBinding(HtmlAttribute att, string name, string value, bool constant = false)
         {
+            if (value.IsEmpty())
+                return;
+
             DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
             value = HtmlEntity.DeEntitize(value);
@@ -321,6 +327,10 @@ namespace NeuroSpeech.AtomsPreCompiler
 
         private void CompileOneWayBinding(HtmlAttribute att, string name, string value)
         {
+
+            if (value.IsEmpty())
+                return;
+
 
             value = HtmlEntity.DeEntitize(value);
 

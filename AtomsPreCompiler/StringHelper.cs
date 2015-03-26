@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace NeuroSpeech.AtomsPreCompiler
 {
@@ -42,6 +43,10 @@ namespace NeuroSpeech.AtomsPreCompiler
             return n;
         }
 
+        internal static string ToEncodedString(this string n) {
+            return HttpUtility.JavaScriptStringEncode(n, true);
+        }
+
         internal static string GetAtomType(this HtmlNode element) {
             return element.Attributes.Where(x => x.Name == "atom-type").Select(x => x.Value).FirstOrDefault();
         }
@@ -52,6 +57,10 @@ namespace NeuroSpeech.AtomsPreCompiler
             var c = element.OwnerDocument.CreateComment("<!-- " + comment + " -->");
             element.AppendChild(c);
 
+        }
+
+        internal static bool IsEmpty(this string n) {
+            return string.IsNullOrWhiteSpace(n);
         }
 
     }
