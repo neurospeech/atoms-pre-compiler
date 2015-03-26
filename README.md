@@ -18,3 +18,13 @@ Modify web.config as shown below on IIS7 onwards
 	 </system.webServer>
 
 
+Query String Parameters
+-----------------------
+
+Turn on/off pre compilation
+
+    atoms-pre-compile=(yes/no) default=yes
+
+Turn on/off debug mode
+
+    atoms-pre-compile-mode=(debug/none) default=none

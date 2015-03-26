@@ -47,8 +47,12 @@ namespace NeuroSpeech.AtomsPreCompiler
             {
                 if (context.Response.ContentType.EqualsIgnoreCase("text/html"))
                 {
+                    var c = context.Request.QueryString["atoms-pre-compile"] ?? "";
+                    if (c.EqualsIgnoreCase("no"))
+                        return p;
                     NeuroSpeech.AtomsPreCompiler.PageCompiler page = new NeuroSpeech.AtomsPreCompiler.PageCompiler();
-                    page.Debug = true;
+                    c = context.Request.QueryString["atoms-pre-compile-mode"] ?? "";
+                    page.Debug = c.EqualsIgnoreCase("debug");
                     encoding = context.Response.ContentEncoding ?? System.Text.Encoding.Default;
                     html = encoding.GetString(p);
                     var result = page.Compile(html);

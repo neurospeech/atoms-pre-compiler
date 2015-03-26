@@ -56,7 +56,15 @@ namespace NeuroSpeech.AtomsPreCompiler
 
             pageScript.AppendChild(Document.CreateTextNode(script));
 
+            if (this.Debug)
+            {
+                Header.AddComment("Pre compiled script start");
+            }
             Header.AppendChild(pageScript);
+            if (this.Debug)
+            {
+                Header.AddComment("Pre compiled script end");
+            }
 
             using (StringWriter sw = new StringWriter()) {
                 Document.Save(sw);

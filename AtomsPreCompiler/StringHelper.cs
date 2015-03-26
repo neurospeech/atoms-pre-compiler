@@ -45,5 +45,14 @@ namespace NeuroSpeech.AtomsPreCompiler
         internal static string GetAtomType(this HtmlNode element) {
             return element.Attributes.Where(x => x.Name == "atom-type").Select(x => x.Value).FirstOrDefault();
         }
+
+        internal static void AddComment(this HtmlNode element, string comment)
+        {
+
+            var c = element.OwnerDocument.CreateComment("<!-- " + comment + " -->");
+            element.AppendChild(c);
+
+        }
+
     }
 }
