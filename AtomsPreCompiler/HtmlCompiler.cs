@@ -250,7 +250,7 @@ namespace NeuroSpeech.AtomsPreCompiler
             if (value.IsEmpty())
                 return;
 
-            value = HtmlEntity.DeEntitize(value);
+            value = value.ToHtmlDecode();
 
             DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
@@ -281,7 +281,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
             DebugLog("/* Line {0}, {1}=\"{2}\" */", att.Line, att.Name, att.Value);
 
-            value = HtmlEntity.DeEntitize(value);
+            value = value.ToHtmlDecode();
 
             value = bindingRegex.Replace(value, (s) => "Atom.get(this,'" + s.Value.EscapeBinding() + "')");
 
@@ -332,7 +332,7 @@ namespace NeuroSpeech.AtomsPreCompiler
                 return;
 
 
-            value = HtmlEntity.DeEntitize(value);
+            value = value.ToHtmlDecode();
 
             List<Tuple<string, string>> variables = new List<Tuple<string, string>>();
             value = bindingRegex.Replace(value, (s) => {
@@ -395,7 +395,7 @@ namespace NeuroSpeech.AtomsPreCompiler
 
                 DebugLog("// Line " + element.Line);
 
-                script = HtmlEntity.DeEntitize(script);
+                script = script.ToHtmlDecode();
 
                 Writer.WriteLine("\tthis.set_scope(" + script + ");");
 

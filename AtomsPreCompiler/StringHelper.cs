@@ -43,6 +43,10 @@ namespace NeuroSpeech.AtomsPreCompiler
             return n;
         }
 
+        internal static string ToHtmlDecode(this string n) {
+            return HttpUtility.HtmlDecode(n);
+        }
+
         internal static string ToEncodedString(this string n) {
             return HttpUtility.JavaScriptStringEncode(n, true);
         }
