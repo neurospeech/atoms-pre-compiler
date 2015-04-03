@@ -106,19 +106,19 @@ namespace NeuroSpeech.AtomsPreCompiler
         /// </summary>
         public override bool CanRead
         {
-            get { return true; }
+            get { return _cacheStream.CanRead; }
         }
 
         public override bool CanSeek
         {
-            get { return true; }
+            get { return _cacheStream.CanSeek; }
         }
         /// <summary>
         /// 
         /// </summary>
         public override bool CanWrite
         {
-            get { return true; }
+            get { return _cacheStream.CanWrite; }
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace NeuroSpeech.AtomsPreCompiler
         /// </summary>
         public override long Length
         {
-            get { return 0; }
+            get { return _cacheStream.Length; }
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace NeuroSpeech.AtomsPreCompiler
         /// </summary>
         public override long Position
         {
-            get { return _stream.Position; }
-            set { _stream.Position = value; }
+            get { return _cacheStream.Position; }
+            set { _cacheStream.Position = value; }
         }
 
         /// <summary>
@@ -146,8 +146,7 @@ namespace NeuroSpeech.AtomsPreCompiler
         /// <returns></returns>
         public override long Seek(long offset, System.IO.SeekOrigin direction)
         {
-            //return _stream.Seek(offset, direction);
-            throw new NotSupportedException();
+            return _cacheStream.Seek(offset, direction);
         }
 
         /// <summary>
@@ -156,8 +155,7 @@ namespace NeuroSpeech.AtomsPreCompiler
         /// <param name="length"></param>
         public override void SetLength(long length)
         {
-            //_stream.SetLength(length);
-            throw new NotSupportedException();
+            _cacheStream.SetLength(length);
         }
 
         /// <summary>
@@ -194,7 +192,7 @@ namespace NeuroSpeech.AtomsPreCompiler
         /// <returns></returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return _stream.Read(buffer, offset, count);
+            return _cacheStream.Read(buffer, offset, count);
         }
 
 
