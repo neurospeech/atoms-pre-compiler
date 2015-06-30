@@ -54,7 +54,10 @@ namespace NeuroSpeech.AtomsPreCompiler
                 {
                     if (child is HtmlTextNode)
                     {
-                        list.Add(string.Format("\"{0}\"", encode((child as HtmlTextNode).Text)));
+                        string text = (child as HtmlTextNode).Text.Trim('\n', '\r');
+                        if (text.IsEmpty())
+                            continue;
+                        list.Add(string.Format("\"{0}\"", encode(text)));
                     }
                     else
                     {
