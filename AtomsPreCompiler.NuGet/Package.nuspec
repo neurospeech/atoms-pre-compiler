@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Atoms.PreCompiler</id>
-    <version>1.1.161</version>
+    <version>1.1.162</version>
     <title>Atoms.js PreCompiler</title>
     <authors>Akash</authors>
     <owners></owners>
@@ -23,7 +23,7 @@
     <copyright>Copyright  2015</copyright>
     <dependencies>
         <group targetFramework="net40">
-          <dependency id="HtmlAgilityPack" version="1.4.9" />
+          <dependency id="HtmlAgilityPack" version="1.5.1" />
         </group>
     </dependencies>
     <references></references>
